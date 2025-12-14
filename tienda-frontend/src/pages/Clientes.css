@@ -1,0 +1,61 @@
+.clientes-page {
+    padding: 24px 0;
+}
+
+.clientes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+}
+
+.cliente-card {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.cliente-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    font-weight: 700;
+    flex-shrink: 0;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+}
+
+.cliente-info {
+    flex: 1;
+}
+
+.cliente-info h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 12px;
+}
+
+.cliente-detail {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--text-light);
+    margin-bottom: 8px;
+}
+
+.cliente-puntos {
+    margin-top: 12px;
+}
+
+@media (max-width: 768px) {
+    .clientes-grid {
+        grid-template-columns: 1fr;
+    }
+}
