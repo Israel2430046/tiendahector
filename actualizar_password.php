@@ -1,5 +1,5 @@
 <?php
-// script para generar hash correcto de password y actualizar base de datos
+// script para generar hash correcto de password y asegurar que existe el admin
 
 // configuracion de base de datos
 $host = 'localhost';
@@ -17,27 +17,34 @@ try {
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
     
     echo "generando hash para password: $password\n";
-    echo "hash generado: $hashedPassword\n\n";
     
-    // actualizar usuario administrador
-    $query = "UPDATE usuarios SET password = :password WHERE email = 'admin@tienda.com'";
-    $stmt = $conn->prepare($query);
-    $stmt->bindParam(':password', $hashedPassword);
+    // verificar si existe el usuario
+    $check = $conn->query("SELECT idUsuario FROM usuarios WHERE email = 'admin@tienda.com'");
     
-    if ($stmt->execute()) {
-        echo "✓ password actualizado exitosamente!\n\n";
-        echo "ahora puedes iniciar sesion con:\n";
-        echo "email: admin@tienda.com\n";
-        echo "password: admin123\n";
+    if ($check->rowCount() > 0) {
+        // actualizar usuario existente
+        $query = "UPDATE usuarios SET password = :password WHERE email = 'admin@tienda.com'";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':password', $hashedPassword);
+        $stmt->execute();
+        echo "✓ password actualizado correctemente para admin@tienda.com\n";
     } else {
-        echo "✗ error al actualizar password\n";
+        // crear usuario si no existe
+        echo " el usuario no existia, creandolo...\n";
+        $query = "INSERT INTO usuarios (nombreUsuario, email, password, idRol) VALUES ('Administrador', 'admin@tienda.com', :password, 1)";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':password', $hashedPassword);
+        $stmt->execute();
+        echo "✓ usuario admin creado exitosamente\n";
     }
+    
+    echo "\n----------------------------------------\n";
+    echo "INTENTA INGRESAR AHORA CON:\n";
+    echo "Email: admin@tienda.com\n";
+    echo "Password: admin123\n";
+    echo "----------------------------------------\n";
     
 } catch(PDOException $e) {
     echo "error de conexion: " . $e->getMessage() . "\n";
-    echo "\nverifica que:\n";
-    echo "1. mariadb este corriendo\n";
-    echo "2. la base de datos 'tienda_abarrotes' exista\n";
-    echo "3. las credenciales sean correctas\n";
 }
 ?>
