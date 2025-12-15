@@ -1,9 +1,9 @@
 <?php
 // configuracion de la base de datos
-define('DB_HOST', '127.0.0.1');
-define('DB_NAME', 'tienda_abarrotes');
-define('DB_USER', 'root');
-define('DB_PASS', 'e2gk8ann86');
+define('DB_HOST', getenv('DB_HOST') ?: '127.0.0.1');
+define('DB_NAME', getenv('DB_NAME') ?: 'tienda_abarrotes');
+define('DB_USER', getenv('DB_USER') ?: 'root');
+define('DB_PASS', getenv('DB_PASS') ?: 'e2gk8ann86');
 define('DB_CHARSET', 'utf8mb4');
 
 // configuracion de la aplicacion
